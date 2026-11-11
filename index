@@ -1,0 +1,275 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conocer para prevenir: información y recursos para comprender y prevenir la violencia feminicida.">
+  <title>Feminicidio | Conocer para prevenir</title>
+  <style>
+    :root {
+      --morado: #55206f;
+      --morado-oscuro: #321044;
+      --morado-claro: #eee1f5;
+      --rosa: #e85b9c;
+      --rosa-claro: #ffe3ef;
+      --fondo: #fff8fc;
+      --texto: #302536;
+      --blanco: #ffffff;
+      --sombra: 0 12px 32px rgba(71, 28, 91, .12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--texto);
+      background: var(--fondo);
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .barra {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 18px; padding: 14px 7%;
+      color: var(--blanco); background: var(--morado-oscuro);
+      box-shadow: 0 3px 15px rgba(0,0,0,.12);
+    }
+    .marca { font-weight: 800; letter-spacing: .4px; }
+    nav { display: flex; flex-wrap: wrap; gap: 16px; }
+    nav a { color: white; text-decoration: none; font-size: .92rem; }
+    nav a:hover { color: #ffadd1; }
+    .hero {
+      padding: 90px 7% 82px;
+      color: white;
+      background: linear-gradient(135deg, #401451 0%, #71328b 55%, #d64e91 100%);
+      text-align: center;
+    }
+    .etiqueta {
+      display: inline-block; padding: 7px 15px; border-radius: 99px;
+      color: white; background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.35);
+      font-size: .82rem; letter-spacing: 1px; text-transform: uppercase;
+    }
+    h1 { max-width: 850px; margin: 20px auto 12px; font-size: clamp(2.3rem, 6vw, 4.6rem); line-height: 1.08; }
+    .hero p { max-width: 690px; margin: 0 auto 28px; font-size: 1.12rem; color: #fff0f7; }
+    .boton {
+      display: inline-block; padding: 12px 22px; border-radius: 30px;
+      background: white; color: var(--morado); font-weight: 700;
+      text-decoration: none; transition: transform .2s, box-shadow .2s;
+    }
+    .boton:hover { transform: translateY(-2px); box-shadow: 0 8px 20px #2b103955; }
+    main { width: min(1100px, 88%); margin: auto; }
+    section { padding: 66px 0; scroll-margin-top: 75px; }
+    .encabezado { text-align: center; max-width: 760px; margin: 0 auto 30px; }
+    .encabezado span { color: var(--rosa); font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; font-size: .78rem; }
+    h2 { color: var(--morado); font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin: 8px 0 12px; }
+    h3 { color: var(--morado); margin-top: 0; }
+    .tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .tarjeta {
+      background: white; padding: 25px; border-radius: 18px;
+      box-shadow: var(--sombra); border-top: 5px solid var(--rosa);
+    }
+    .tarjeta:nth-child(2) { border-top-color: var(--morado); }
+    .tarjeta:nth-child(3) { border-top-color: #b77bd0; }
+    .numero {
+      display: grid; place-items: center; width: 42px; height: 42px;
+      border-radius: 13px; color: var(--morado); background: var(--rosa-claro);
+      font-weight: 800; margin-bottom: 14px;
+    }
+    .suave { background: var(--morado-claro); }
+    .dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+    .panel {
+      padding: 28px; background: white; border-radius: 20px; box-shadow: var(--sombra);
+    }
+    .lista { padding-left: 21px; }
+    .lista li { margin: 10px 0; }
+    .alerta {
+      padding: 22px 24px; border-left: 5px solid var(--rosa);
+      border-radius: 12px; background: var(--rosa-claro);
+    }
+    .pasos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .paso { padding: 20px; background: white; border-radius: 15px; border: 1px solid #f3d4e4; }
+    .paso strong { color: var(--morado); display: block; margin-bottom: 5px; }
+    .recursos { background: var(--morado-oscuro); color: white; }
+    .recursos h2, .recursos h3 { color: white; }
+    .recursos .encabezado span { color: #ffabd0; }
+    .recurso {
+      padding: 20px; border-radius: 15px; background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+    }
+    .recurso a { color: #ffc2dc; overflow-wrap: anywhere; }
+    .cierre {
+      padding: 35px; text-align: center; border-radius: 20px;
+      color: var(--morado); background: linear-gradient(120deg, var(--rosa-claro), var(--morado-claro));
+    }
+    footer { padding: 25px 7%; text-align: center; color: #f8eafa; background: #240b31; font-size: .9rem; }
+    footer p { margin: 5px; }
+    @media (max-width: 760px) {
+      .barra { align-items: flex-start; flex-direction: column; }
+      nav { gap: 10px 14px; }
+      .hero { padding: 68px 6%; }
+      .tarjetas, .dos-columnas, .pasos { grid-template-columns: 1fr; }
+      section { padding: 48px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="barra">
+    <div class="marca">CONOCER PARA PREVENIR</div>
+    <nav aria-label="Navegación principal">
+      <a href="#que-es">¿Qué es?</a>
+      <a href="#senales">Señales</a>
+      <a href="#prevencion">Prevención</a>
+      <a href="#ayuda">Pedir ayuda</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <span class="etiqueta">Información · Conciencia · Prevención</span>
+    <h1>Feminicidio: conocer para prevenir</h1>
+    <p>La violencia contra las mujeres no debe normalizarse. Informarnos, reconocer las señales y acompañar a quienes lo necesitan también es una forma de prevenir.</p>
+    <a class="boton" href="#que-es">Conoce más</a>
+  </div>
+
+  <main>
+    <section id="que-es">
+      <div class="encabezado">
+        <span>01 · Información</span>
+        <h2>¿Qué es el feminicidio?</h2>
+        <p>En México, el feminicidio es la privación de la vida de una mujer por razones de género. Es una forma extrema de violencia que puede estar relacionada con antecedentes de violencia, amenazas, abuso o desigualdad.</p>
+      </div>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <div class="numero">1</div>
+          <h3>Es violencia de género</h3>
+          <p>No es un hecho aislado: refleja relaciones de poder, discriminación y violencia contra las mujeres.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="numero">2</div>
+          <h3>Puede tener antecedentes</h3>
+          <p>En algunos casos existen señales previas, como amenazas, control, agresiones o acoso. Cada situación es distinta.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="numero">3</div>
+          <h3>Es un problema social</h3>
+          <p>Prevenirlo requiere educación, justicia, atención a las víctimas y participación de toda la comunidad.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="suave" id="senales">
+      <div class="encabezado">
+        <span>02 · Reconocer</span>
+        <h2>Señales de violencia</h2>
+        <p>La violencia puede presentarse de distintas maneras. Identificarla ayuda a buscar apoyo oportunamente.</p>
+      </div>
+      <div class="dos-columnas">
+        <div class="panel">
+          <h3>Algunas señales de alerta</h3>
+          <ul class="lista">
+            <li>Controlar amistades, ropa, actividades o decisiones.</li>
+            <li>Revisar el teléfono o exigir contraseñas.</li>
+            <li>Aislar de familiares y personas de confianza.</li>
+            <li>Insultar, humillar, intimidar o amenazar.</li>
+            <li>Ejercer violencia física, sexual, económica o psicológica.</li>
+            <li>Perseguir, acosar o vigilar constantemente.</li>
+          </ul>
+        </div>
+        <div class="alerta">
+          <h3>Importante</h3>
+          <p>Los celos, el control y las amenazas no son pruebas de amor. Nadie merece vivir con miedo ni tiene la culpa de la violencia que otra persona ejerce.</p>
+          <p>Si reconoces estas señales en tu entorno, escucha sin juzgar y ayuda a buscar apoyo seguro.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="prevencion">
+      <div class="encabezado">
+        <span>03 · Actuar</span>
+        <h2>¿Cómo podemos prevenir la violencia?</h2>
+        <p>La prevención comienza con acciones cotidianas y también necesita respuestas de las instituciones.</p>
+      </div>
+      <div class="pasos">
+        <div class="paso"><strong>01. Educar en igualdad</strong>Promover el respeto, la autonomía y relaciones libres de violencia.</div>
+        <div class="paso"><strong>02. No normalizar</strong>Tomar en serio las amenazas, el acoso y las conductas de control.</div>
+        <div class="paso"><strong>03. Escuchar y acompañar</strong>Creer a quien pide ayuda, evitar culpar y respetar sus decisiones.</div>
+        <div class="paso"><strong>04. Exigir justicia</strong>Apoyar la atención a víctimas, la investigación adecuada y la prevención comunitaria.</div>
+      </div>
+    </section>
+
+    <section class="suave" id="ayuda">
+      <div class="encabezado">
+        <span>04 · Apoyo</span>
+        <h2>¿Dónde buscar ayuda en México?</h2>
+        <p>Si tú o alguien más está en peligro, la prioridad es llegar a un lugar seguro y contactar a personas o instituciones que puedan intervenir.</p>
+      </div>
+      <div class="dos-columnas">
+        <div class="panel">
+          <h3>Opciones de apoyo</h3>
+          <ul class="lista">
+            <li><strong>911:</strong> emergencias cuando existe peligro inmediato.</li>
+            <li><strong>911 o servicios locales:</strong> solicita apoyo de emergencia y orientación para contactar autoridades.</li>
+            <li><strong>Centro de Justicia para las Mujeres:</strong> puede ofrecer orientación jurídica, atención psicológica y acompañamiento, según los servicios de cada sede.</li>
+            <li><strong>Personas de confianza:</strong> familiares, docentes u otras personas adultas que puedan ayudar a buscar apoyo.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Si alguien te cuenta que vive violencia</h3>
+          <ul class="lista">
+            <li>Escucha con respeto y sin cuestionar su relato.</li>
+            <li>No la culpes ni minimices lo que está viviendo.</li>
+            <li>Pregunta qué apoyo necesita y respeta sus decisiones.</li>
+            <li>No confrontes a la persona agresora si eso puede aumentar el riesgo.</li>
+            <li>Si hay peligro inmediato, llama al 911.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="recursos" id="recursos">
+      <div class="encabezado">
+        <span>05 · Fuentes de información</span>
+        <h2>Infórmate y comparte</h2>
+        <p>Consulta instituciones oficiales para conocer tus derechos, servicios y formas de atención.</p>
+      </div>
+      <div class="tarjetas">
+        <article class="recurso">
+          <h3>Gobierno de México</h3>
+          <p>Información y servicios públicos.</p>
+          <a href="https://www.gob.mx/" target="_blank" rel="noopener noreferrer">https://www.gob.mx/</a>
+        </article>
+        <article class="recurso">
+          <h3>Comisión Nacional para Prevenir y Erradicar la Violencia contra las Mujeres</h3>
+          <p>Información institucional sobre prevención y atención de la violencia.</p>
+          <a href="https://www.gob.mx/conavim" target="_blank" rel="noopener noreferrer">https://www.gob.mx/conavim</a>
+        </article>
+        <article class="recurso">
+          <h3>ONU Mujeres</h3>
+          <p>Materiales e información sobre igualdad de género y violencia contra las mujeres.</p>
+          <a href="https://www.unwomen.org/es" target="_blank" rel="noopener noreferrer">https://www.unwomen.org/es</a>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="cierre">
+        <h2>La violencia no debe ser normalizada.</h2>
+        <p>Informarnos, respetar, escuchar y actuar puede contribuir a construir comunidades más seguras e igualitarias.</p>
+        <strong>Conocer para prevenir. Escuchar para acompañar. Actuar para cambiar.</strong>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Feminicidio: conocer para prevenir</strong></p>
+    <p>Proyecto educativo de concientización · Diseño en morado y rosa</p>
+  </footer>
+</body>
+</html>
+'''
+path = Path("/mnt/data/feminicidio_conocer_para_prevenir.html")
+path.write_text(html, encoding="utf-8")
+print(f"Archivo creado: {path} ({len(html)} caracteres)")
+
